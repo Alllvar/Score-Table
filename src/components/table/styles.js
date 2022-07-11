@@ -1,10 +1,6 @@
 import styled from 'styled-components';
 
 export const Table = styled.table`
-  //border: 2px solid forestgreen;
-  //width: 800px;
-  //height: auto;
-
   border: 1px solid #ccc;
   border-collapse: collapse;
   margin: 0;

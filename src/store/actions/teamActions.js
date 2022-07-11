@@ -1,4 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 
-export const addTeam = createAction('addTeam')
-export const removeTeam = createAction('removeTeam')
+export const removeCountry = createAction('removeCountry')
+export const addDefaultTeams = createAction('addDefaultTeams')
+export const addCountry = createAction('addCountry')
+export const addMatchResult = createAction('addMatchResult')

@@ -1,41 +1,35 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTeams } from '../../store/selectors';
-import { removeTeam } from '../../store/actions/teamActions';
-import { useEffect, useState } from 'react';
+import { getMatches, getCountries } from '../../store/selectors';
+import { removeCountry } from '../../store/actions/teamActions';
 import { Table, Th, Td, Tr, CloseButton } from './styles'
+import { getScoreTable } from '../common/getScoreTable';
 
 export const TableComponent = () => {
-    const teams = useSelector(getTeams);
-    const [teamsPoints, setTeamsPoints] = useState([]);
+    const matches = useSelector(getMatches);
+    const countries = useSelector(getCountries);
     const dispatch = useDispatch();
-    const removeTeamHandler = (id) => {
-        dispatch(removeTeam(id))
+
+    const removeTeamHandler = (name) => {
+        dispatch(removeCountry(name))
     };
 
-    useEffect(() => {
-        const Data = JSON.parse(localStorage.getItem('teams-data'));
-        if (teamsPoints) {
-            setTeamsPoints(Data);
-        }
-    }, []);
+    const scoreTable = getScoreTable(countries, matches)
 
-    const renderTeams = teams.map((team, key) => {
+    const renderTeams = Object.values(Object.assign(scoreTable)).sort((a, b) => b.points - a.points).map((team, key) => {
         return (
-            <tbody key={key}>
-                <Tr>
-                    <Td>{team.place}</Td>
-                    <Td>{team.name}</Td>
-                    <Td>{team.played}</Td>
-                    <Td>{team.win}</Td>
-                    <Td>{team.draw}</Td>
-                    <Td>{team.lost}</Td>
-                    <Td>{team.points}</Td>
-                    <Td>
-                        <CloseButton onClick={() => removeTeamHandler(team.id)}>×</CloseButton>
-                    </Td>
-                </Tr>
-            </tbody>
+            <Tr key={key}>
+                <Td>{key + 1}</Td>
+                <Td>{countries[key]}</Td>
+                <Td>{team.wins + team.loses + team.draws}</Td>
+                <Td>{team.wins}</Td>
+                <Td>{team.draws}</Td>
+                <Td>{team.loses}</Td>
+                <Td>{team.points}</Td>
+                <Td>
+                    <CloseButton onClick={() => removeTeamHandler(countries[key])}>×</CloseButton>
+                </Td>
+            </Tr>
         )
     })
 
@@ -53,7 +47,9 @@ export const TableComponent = () => {
                     <Th> - </Th>
                 </Tr>
             </thead>
-            {renderTeams}
+            <tbody>
+                {renderTeams}
+            </tbody>
         </Table>
     );
 };

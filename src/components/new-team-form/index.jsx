@@ -4,32 +4,18 @@ import {
     FormInput,
     Submit
 } from './styles'
-import { useDispatch, useSelector } from 'react-redux';
-import { addTeam } from '../../store/actions/teamActions';
-import { getTeams } from '../../store/selectors';
-
-const defaultPoints = {
-    place: 0,
-    played: 0,
-    win: 0,
-    draw: 0,
-    lost: 0,
-    points: 0,
-}
+import { useDispatch } from 'react-redux';
+import { addCountry } from '../../store/actions/teamActions';
 
 export const AddTeam = () => {
     const [team, setTeam] = useState('')
-    const teams = useSelector(getTeams);
 
     const dispatch = useDispatch();
 
     const addTeamHandler = (e) => {
         e.preventDefault()
-        dispatch(addTeam({
-            name: team,
-            id: Math.random(),
-            ...defaultPoints
-        }))
+        dispatch(addCountry(team))
+
         setTeam('')
     }
 
